@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using System;
 using System.Net.Http;
@@ -15,9 +15,18 @@ namespace VacationRental.Api.Tests
 
         public IntegrationFixture()
         {
-            _server = new TestServer(new WebHostBuilder().UseStartup<Startup>());
+            var application = new WebApplicationFactory<Program>()
+                .WithWebHostBuilder(builder =>
+                {
+                    builder.ConfigureServices(services =>
+                    {
+                        // set up services
+                    });
+                });
 
-            Client = _server.CreateClient();
+            _server = application.Server;
+
+            Client = application.CreateClient();
         }
 
         public void Dispose()
