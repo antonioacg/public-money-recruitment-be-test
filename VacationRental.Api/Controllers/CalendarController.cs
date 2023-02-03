@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
 using VacationRental.Api.Models;
 
 namespace VacationRental.Api.Controllers
@@ -25,28 +25,54 @@ namespace VacationRental.Api.Controllers
         {
             if (nights < 0)
                 throw new ApplicationException("Nights must be positive");
-            if (!_rentals.ContainsKey(rentalId))
+            if (!_rentals.TryGetValue(rentalId, out var rental))
                 throw new ApplicationException("Rental not found");
 
-            var result = new CalendarViewModel 
+            var result = new CalendarViewModel
             {
                 RentalId = rentalId,
-                Dates = new List<CalendarDateViewModel>() 
+                Dates = new List<CalendarDateViewModel>()
             };
+            var bookingUnitMap = new Dictionary<BookingViewModel, int>();
             for (var i = 0; i < nights; i++)
             {
                 var date = new CalendarDateViewModel
                 {
-                    Date = start.Date.AddDays(i),
-                    Bookings = new List<CalendarBookingViewModel>()
+                    Date = start.Date.AddDays(i)
                 };
 
                 foreach (var booking in _bookings.Values)
                 {
-                    if (booking.RentalId == rentalId
-                        && booking.Start <= date.Date && booking.Start.AddDays(booking.Nights) > date.Date)
+                    if (booking.RentalId != rentalId) continue;
+
+
+                    if (!bookingUnitMap.TryGetValue(booking, out var bookingUnit))
                     {
-                        date.Bookings.Add(new CalendarBookingViewModel { Id = booking.Id });
+                        if (bookingUnitMap.Count == rental.Units)
+                            throw new Exception("overbooking");
+
+                        bookingUnit = bookingUnitMap.Count + 1;
+                        bookingUnitMap.Add(booking, bookingUnit);
+                    }
+
+                    var bookingStart = booking.Start;
+                    var bookingNightsEnd = bookingStart.AddDays(booking.Nights);
+                    var bookingPreparationTimeEnd = bookingNightsEnd.AddDays(rental.PreparationTimeInDays);
+
+                    if (bookingStart <= date.Date && date.Date < bookingNightsEnd)
+                    {
+                        date.Bookings.Add(new CalendarBookingViewModel
+                        {
+                            Id = booking.Id,
+                            Unit = bookingUnit
+                        });
+                    }
+                    if (bookingNightsEnd <= date.Date && date.Date < bookingPreparationTimeEnd)
+                    {
+                        date.PreparationTimes.Add(new CalendarPreparationTimeViewModel
+                        {
+                            Unit = bookingUnit
+                        });
                     }
                 }
 
