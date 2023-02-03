@@ -1,7 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using VacationRental.Api.Models;
+using VacationRental.Application.Features.Rentals.AddRental.UseCase;
+using VacationRental.Application.Features.Rentals.GetRental.UseCase;
+using VacationRental.Application.Shared.Domain.Exceptions;
+using VacationRental.Application.Shared.Domain.Models;
 
 namespace VacationRental.Api.Controllers
 {
@@ -16,29 +22,32 @@ namespace VacationRental.Api.Controllers
             _rentals = rentals;
         }
 
-        [HttpGet]
-        [Route("{rentalId:int}")]
-        public RentalViewModel Get(int rentalId)
+        [HttpGet("{rentalId:int?}")]
+        [ProducesResponseType(typeof(Rental), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        public async Task<ActionResult> Get([FromServices] IGetRentalUseCase getRentalUseCase,
+            [FromRoute] int? rentalId, CancellationToken cancellationToken)
         {
-            if (!_rentals.ContainsKey(rentalId))
-                throw new ApplicationException("Rental not found");
+            var rental = await getRentalUseCase.ExecuteAsync(rentalId, cancellationToken);
 
-            return _rentals[rentalId];
+            return rental is not null ? Ok(rental) : NoContent();
         }
 
         [HttpPost]
-        public ResourceIdViewModel Post(RentalBindingModel model)
+        [Produces(typeof(ResourceIdViewModel))]
+        public async Task<ActionResult> Post([FromServices] IAddRentalUseCase addRentalUseCase,
+            [FromBody] AddRentalInput input, CancellationToken cancellationToken)
         {
-            var key = new ResourceIdViewModel { Id = _rentals.Keys.Count + 1 };
-
-            _rentals.Add(key.Id, new RentalViewModel
+            try
             {
-                Id = key.Id,
-                Units = model.Units,
-                PreparationTimeInDays = model.PreparationTimeInDays,
-            });
-
-            return key;
+                var rental = await addRentalUseCase.ExecuteAsync(input, cancellationToken);
+                var key = new ResourceIdViewModel { Id = rental.Id };
+                return Ok(key);
+            }
+            catch (DataContractValidationException validationException)
+            {
+                return BadRequest(validationException.ValidationResult);
+            }
         }
     }
 }

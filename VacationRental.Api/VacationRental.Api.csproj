@@ -7,13 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include ="VacationRental.Api.Tests"/>
+    <InternalsVisibleTo Include="VacationRental.Api.Tests" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VacationRental.Application\VacationRental.Application.csproj" />
   </ItemGroup>
 
 </Project>
