@@ -1,26 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using VacationRental.Api.Models;
+using VacationRental.Application.Features.Rentals.AddRental.Domain;
 using VacationRental.Application.Features.Rentals.AddRental.UseCase;
 using VacationRental.Application.Features.Rentals.GetRental.UseCase;
 using VacationRental.Application.Shared.Domain.Exceptions;
 using VacationRental.Application.Shared.Domain.Models;
 
-namespace VacationRental.Api.Controllers
+namespace VacationRental.Api.Controllers.v1
 {
-    [Route("api/v1/rentals")]
     [ApiController]
+    [Route("api/v1/[controller]")]
     public class RentalsController : ControllerBase
     {
-        private readonly IDictionary<int, RentalViewModel> _rentals;
-
-        public RentalsController(IDictionary<int, RentalViewModel> rentals)
-        {
-            _rentals = rentals;
-        }
 
         [HttpGet("{rentalId:int?}")]
         [ProducesResponseType(typeof(Rental), (int)HttpStatusCode.OK)]
@@ -34,7 +28,8 @@ namespace VacationRental.Api.Controllers
         }
 
         [HttpPost]
-        [Produces(typeof(ResourceIdViewModel))]
+        [ProducesResponseType(typeof(ResourceIdViewModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult> Post([FromServices] IAddRentalUseCase addRentalUseCase,
             [FromBody] AddRentalInput input, CancellationToken cancellationToken)
         {

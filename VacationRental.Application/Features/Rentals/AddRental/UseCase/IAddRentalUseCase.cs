@@ -1,4 +1,4 @@
-﻿using VacationRental.Api.Models;
+﻿using VacationRental.Application.Features.Rentals.AddRental.Domain;
 using VacationRental.Application.Shared.Domain.Models;
 
 namespace VacationRental.Application.Features.Rentals.AddRental.UseCase;

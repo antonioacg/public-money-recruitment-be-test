@@ -1,18 +1,17 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
-namespace VacationRental.Application.Shared.Domain.Exceptions
+namespace VacationRental.Application.Shared.Domain.Exceptions;
+
+[Serializable]
+[ExcludeFromCodeCoverage]
+public class VacationRentalException : Exception
 {
-    [Serializable]
-    [ExcludeFromCodeCoverage]
-    public class VacationRentalException : Exception
+    public VacationRentalException()
     {
-        public VacationRentalException()
-        {
-        }
-            
-        protected VacationRentalException(SerializationInfo info, StreamingContext context)
-        {
-        }
+    }
+
+    protected VacationRentalException(SerializationInfo info, StreamingContext context)
+    {
     }
 }

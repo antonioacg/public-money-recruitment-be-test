@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using VacationRental.Api.Models;
+using VacationRental.Application.Features.Rentals.AddRental.Domain;
 using VacationRental.Application.Features.Rentals.AddRental.UseCase;
 using VacationRental.Application.Features.Rentals.AddRental.UseCase.Validator;
 
