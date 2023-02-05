@@ -16,8 +16,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\VacationRental.Api\VacationRental.Api.csproj" />
-  </ItemGroup>
-
 </Project>
