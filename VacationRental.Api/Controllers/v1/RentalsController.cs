@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Net;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 using VacationRental.Api.Models;
@@ -17,9 +17,9 @@ namespace VacationRental.Api.Controllers.v1;
 public class RentalsController : ControllerBase
 {
     [HttpGet("{rentalId:int?}")]
-    [ProducesResponseType(typeof(Rental), (int)HttpStatusCode.OK)]
-    [ProducesResponseType((int)HttpStatusCode.NoContent)]
-    public async Task<ActionResult> Get([FromServices] IGetRentalUseCase getRentalUseCase,
+    [ProducesResponseType(typeof(Rental), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Get([FromServices] IGetRentalUseCase getRentalUseCase,
         [FromRoute] int? rentalId, CancellationToken cancellationToken)
     {
         var rental = await getRentalUseCase.ExecuteAsync(rentalId, cancellationToken);
@@ -28,9 +28,9 @@ public class RentalsController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(ResourceIdViewModel), (int)HttpStatusCode.OK)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<ActionResult> Post([FromServices] IAddRentalUseCase addRentalUseCase,
+    [ProducesResponseType(typeof(ResourceIdViewModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Post([FromServices] IAddRentalUseCase addRentalUseCase,
         [FromBody] AddRentalInput input, CancellationToken cancellationToken)
     {
         try
@@ -41,7 +41,7 @@ public class RentalsController : ControllerBase
         }
         catch (DataContractValidationException validationException)
         {
-            return BadRequest(validationException.ValidationResult);
+            return BadRequest(validationException.ValidationErrorMessages);
         }
     }
 }

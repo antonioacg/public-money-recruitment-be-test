@@ -11,7 +11,11 @@ public class VacationRentalException : Exception
     {
     }
 
-    protected VacationRentalException(SerializationInfo info, StreamingContext context)
+    public VacationRentalException(string message) : base(message)
+    {
+    }
+
+    protected VacationRentalException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
 }

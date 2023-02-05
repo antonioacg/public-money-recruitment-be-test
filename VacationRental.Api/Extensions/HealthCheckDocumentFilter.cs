@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Mime;
 
 namespace VacationRental.Api.Extensions;
 
+[ExcludeFromCodeCoverage]
 public class HealthCheckDocumentFilter : IDocumentFilter
 {
     private readonly IApiVersionDescriptionProvider _provider;
@@ -20,8 +22,11 @@ public class HealthCheckDocumentFilter : IDocumentFilter
 
     public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
     {
-        var clientClosedRequestResponses = swaggerDoc.Paths.SelectMany(p => p.Value.Operations)
-            .SelectMany(o => o.Value.Responses).Where(r => r.Key is "499").Select(r => r.Value);
+        var clientClosedRequestResponses = swaggerDoc.Paths
+            .SelectMany(p => p.Value.Operations)
+            .SelectMany(o => o.Value.Responses)
+            .Where(r => r.Key == OperationCanceledExceptionFilter.Status499ClientClosedRequest.ToString())
+            .Select(r => r.Value);
         foreach (var response in clientClosedRequestResponses) response.Description = "Client Closed Request";
 
         var lastVersion = _provider.ApiVersionDescriptions.OrderBy(d => d.ApiVersion).Last();

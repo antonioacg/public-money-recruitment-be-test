@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using FluentValidation.Results;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
-using FluentValidation.Results;
 
 namespace VacationRental.Application.Shared.Domain.Exceptions;
 
@@ -9,13 +9,15 @@ namespace VacationRental.Application.Shared.Domain.Exceptions;
 public class DataContractValidationException : VacationRentalException
 {
     public ValidationResult ValidationResult { get; }
+    public IEnumerable<string> ValidationErrorMessages =>
+        ValidationResult.Errors.Select(e => e.ErrorMessage);
 
     public DataContractValidationException(ValidationResult validationResult)
     {
         ValidationResult = validationResult;
     }
 
-    protected DataContractValidationException(SerializationInfo info, StreamingContext context)
+    protected DataContractValidationException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
         ValidationResult = info.GetValue(nameof(ValidationResult), typeof(ValidationResult)) as ValidationResult ??
                            new ValidationResult();

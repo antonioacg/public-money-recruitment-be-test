@@ -1,38 +1,30 @@
-﻿using System;
-using System.Net.Http;
-using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using System;
+using System.Net.Http;
 using Xunit;
 
-namespace VacationRental.Api.Tests
+namespace VacationRental.Api.Tests;
+
+[CollectionDefinition("Integration")]
+public sealed class IntegrationFixture : IDisposable, ICollectionFixture<IntegrationFixture>
 {
-    [CollectionDefinition("Integration")]
-    public sealed class IntegrationFixture : IDisposable, ICollectionFixture<IntegrationFixture>
+    private readonly TestServer _server;
+
+    public HttpClient Client { get; }
+
+    public IntegrationFixture()
     {
-        private readonly TestServer _server;
+        var application = new WebApplicationFactory<Program>();
 
-        public HttpClient Client { get; }
+        _server = application.Server;
 
-        public IntegrationFixture()
-        {
-            var application = new WebApplicationFactory<Program>()
-                .WithWebHostBuilder(builder =>
-                {
-                    builder.ConfigureServices(services =>
-                    {
-                        // set up services
-                    });
-                });
+        Client = application.CreateClient();
+    }
 
-            _server = application.Server;
-
-            Client = application.CreateClient();
-        }
-
-        public void Dispose()
-        {
-            Client.Dispose();
-            _server.Dispose();
-        }
+    public void Dispose()
+    {
+        Client.Dispose();
+        _server.Dispose();
     }
 }
