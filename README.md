@@ -114,4 +114,3 @@ If the length of preparation time is changed then it should be updated for all e
   - Do not modify the API routes
 - Besides it changing/adding everything is allowed, feel free to add new projects, libraries etc. - everything what you consider as useful
 - If there is something that you want us to notice in your approach please add a text file describing it
-
