@@ -20,6 +20,7 @@ internal class AddBookingInputValidator : AbstractValidator<AddBookingInput>
             .WithMessage(i => $"{nameof(i.Start)} with value {i.Start} must be after today");
 
         RuleFor(i => i.RentalId)
+            .NotNull()
             .GreaterThan(0)
             .WithMessage(i => $"{nameof(i.Nights)} with value {i.Nights} must be greater than 0");
     }

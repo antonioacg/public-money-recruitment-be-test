@@ -3,7 +3,7 @@ using VacationRental.Application.Shared.Domain.Models;
 
 namespace VacationRental.Application.Shared.Repositories.Rentals;
 
-internal class RentalRepository : IRentalRepository
+public class RentalRepository : IRentalRepository
 {
     private readonly ConcurrentDictionary<int, Rental> _rentals;
 

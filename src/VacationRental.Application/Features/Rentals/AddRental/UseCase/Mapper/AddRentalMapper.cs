@@ -9,7 +9,7 @@ internal static class AddRentalMapper
     {
         var rental = new Rental
         {
-            Units = input.Units,
+            Units = input.Units!.Value,
             PreparationTimeInDays = input.PreparationTimeInDays ?? 0,
         };
         return rental;

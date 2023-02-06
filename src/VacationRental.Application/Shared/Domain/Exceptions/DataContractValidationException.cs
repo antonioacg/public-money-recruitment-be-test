@@ -12,6 +12,11 @@ public class DataContractValidationException : VacationRentalException
     public IEnumerable<string> ValidationErrorMessages =>
         ValidationResult.Errors.Select(e => e.ErrorMessage);
 
+    public DataContractValidationException()
+    {
+        ValidationResult = new ValidationResult();
+    }
+
     public DataContractValidationException(ValidationResult validationResult)
     {
         ValidationResult = validationResult;

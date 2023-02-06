@@ -10,6 +10,7 @@ internal class GetCalendarInputValidator : AbstractValidator<GetCalendarInput>
         ClassLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(i => i.Nights)
+            .NotNull()
             .GreaterThan(0)
             .WithMessage(i => $"{nameof(i.Nights)} with value {i.Nights} must be greater than 0");
 
@@ -18,6 +19,7 @@ internal class GetCalendarInputValidator : AbstractValidator<GetCalendarInput>
             .WithMessage(i => $"{nameof(i.Start)} must have non empty value");
 
         RuleFor(i => i.RentalId)
+            .NotNull()
             .GreaterThan(0)
             .WithMessage(i => $"{nameof(i.Nights)} with value {i.Nights} must be greater than 0");
     }

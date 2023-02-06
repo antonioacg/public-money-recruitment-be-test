@@ -51,24 +51,7 @@ internal class AddBookingUseCase : IAddBookingUseCase
 
         if (unitsUsed >= _rental.Units)
             throw new RentalUnitsNotAvailableException();
-
-        //for (var i = 0; i < newBooking.Nights; i++)
-        //{
-        //    var count = 0;
-        //    foreach (var rentalBooking in rentalBookings)
-        //    {
-        //        var rentalBookingStart = rentalBooking.Start;
-        //        var rentalBookingEnd = rentalBookingStart.AddDays(rentalBooking.Nights + _rental.PreparationTimeInDays);
-
-        //        if ((rentalBookingStart <= newBookingStart.Date && newBookingStart.Date < rentalBookingEnd)
-        //            || (rentalBookingStart < newBookingEnd && newBookingEnd <= rentalBookingEnd)
-        //            || (rentalBookingStart > newBookingStart && newBookingEnd > rentalBookingEnd))
-        //            count++;
-        //    }
-        //    if (count >= _rental.Units)
-        //        throw new RentalUnitsNotAvailableException();
-        //}
-
+        
         _logger.LogInformation("Adding new Booking: {@booking}", newBooking);
         await _bookingRepository.AddAsync(newBooking, cancellationToken);
 
