@@ -16,8 +16,8 @@ internal class GetCalendarUseCase : IGetCalendarUseCase
     private readonly IValidator<GetCalendarInput> _validator;
     private readonly IBookingRepository _bookingRepository;
     private readonly IRentalRepository _rentalRepository;
+    private readonly Dictionary<Booking, int> _bookedUnitIds = new();
     private Rental? _rental;
-    private readonly Dictionary<Booking, int> _bookedUnitIds = new Dictionary<Booking, int>();
 
     public GetCalendarUseCase(ILogger<GetCalendarUseCase> logger, IValidator<GetCalendarInput> validator,
         IBookingRepository bookingRepository, IRentalRepository rentalRepository)

@@ -17,6 +17,7 @@ internal static class StepArgumentTransformationExtensions
             "DataContractValidationException" => new DataContractValidationException(),
             "RentalNotFoundException" => new RentalNotFoundException(),
             "RentalUnitsNotAvailableException" => new RentalUnitsNotAvailableException(),
+            "RentalOverbookingException" => new RentalOverbookingException(),
             _ => throw new ArgumentException($"'{exception}' is not mapped for transformation"),
         };
     }

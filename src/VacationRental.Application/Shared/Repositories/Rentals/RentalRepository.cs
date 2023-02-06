@@ -31,4 +31,13 @@ public class RentalRepository : IRentalRepository
         } while (!cancellationToken.IsCancellationRequested && !_rentals.TryAdd(id, rental));
         return Task.CompletedTask;
     }
+
+    public Task UpdateAsync(Rental rental, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(rental, nameof(rental));
+        if (rental.Id <= 0) throw new ArgumentException($"{nameof(rental)} has no Id set");
+
+        _rentals[rental.Id] = rental;
+        return Task.FromResult(_rentals[rental.Id]);
+    }
 }

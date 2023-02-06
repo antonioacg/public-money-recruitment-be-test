@@ -5,6 +5,7 @@ using VacationRental.Application.Features.Bookings.GetBooking;
 using VacationRental.Application.Features.Calendar.GetCalendar;
 using VacationRental.Application.Features.Rentals.AddRental;
 using VacationRental.Application.Features.Rentals.GetRental;
+using VacationRental.Application.Features.Rentals.UpdateRental;
 using VacationRental.Application.Shared.Repositories;
 
 namespace VacationRental.Application;
@@ -20,6 +21,7 @@ public static class ServiceCollectionExtensions
 
         services.AddAddRental();
         services.AddGetRental();
+        services.AddUpdateRental();
 
         services.AddAddBooking();
         services.AddGetBooking();

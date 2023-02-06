@@ -1,4 +1,4 @@
-﻿Feature: AddRentals
+﻿Feature: AddRental
 
 Scenario: Adds new rental
 	When trying to add a rental with

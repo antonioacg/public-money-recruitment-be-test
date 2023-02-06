@@ -16,7 +16,7 @@ using VacationRental.Application.Tests.Features.Rentals.AddRental.Tables;
 namespace VacationRental.Application.Tests.Features.Rentals.AddRental;
 
 [Binding]
-[Scope(Feature = "AddRentals")]
+[Scope(Feature = "AddRental")]
 internal class AddRentalStepsDefinitions
 {
     private readonly ScenarioContext _scenarioContext;
@@ -49,7 +49,6 @@ internal class AddRentalStepsDefinitions
         var expectedRental = table.CreateInstance<Rental>();
         actualRental.Should().BeEquivalentTo(expectedRental);
     }
-
 
     [Then(@"should throw '([^']*)'")]
     public void ThenShouldThrow(Exception expectedException)

@@ -22,6 +22,6 @@ internal class AddBookingInputValidator : AbstractValidator<AddBookingInput>
         RuleFor(i => i.RentalId)
             .NotNull()
             .GreaterThan(0)
-            .WithMessage(i => $"{nameof(i.Nights)} with value {i.Nights} must be greater than 0");
+            .WithMessage(i => $"{nameof(i.RentalId)} with value {i.RentalId} must be greater than 0");
     }
 }
